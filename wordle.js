@@ -12,6 +12,10 @@ window.onload = function()
     initialize();
 }
 
+function addLetterAnimation()
+{
+
+}
 function initialize()
 {
     // create game board
@@ -34,33 +38,36 @@ function initialize()
         if(gameOver)
             return;
 
-        //alert(e.code);
 
         if("KeyA" <= e.code && e.code <= "KeyZ")
         {
-            if(col < width) 
+            if(column < width) 
             {
-                let currentTile = document.getElementById(row.toString() + "-" + col.toString());
+
+                let currentTile = document.getElementById(row.toString() + "-" + column.toString());
                 if(currentTile.innerText == "")
                 {
                     currentTile.innerText = e.code[3]; // keyA, keyB..
-                    col += 1;
+                    column += 1;
                 }
             }
         }
         else if(e.code == "Backspace")
         {
-            if(0 < col && col <= width)
-                col -= 1;
+            if(0 < column && column <= width)
+                column -= 1;
 
-            let currentTile = document.getElementById(row.toString() + "-" + col.toString());
+            let currentTile = document.getElementById(row.toString() + "-" + column.toString());
             currentTile.innerText = ""
         }
         else if(e.code == "Enter")
         {
+            if(column < width)
+                return;
+
             update();
             row += 1; // start new row
-            col = 0; // reset col
+            column = 0; // reset col
         }
 
         if(!gameOver && row == height)
@@ -73,6 +80,18 @@ function initialize()
     function update()
     {
         let correct = 0;
+        let letterCount = {}; 
+
+        for(let i = 0; i < word.length; i++)
+        {
+            let letter = word[i];
+            if(letterCount[letter])
+            {
+                letterCount[letter] += 1;
+            }
+            else
+                letterCount[letter] = 1;
+        }
 
         for(let c = 0; c < width; c++)
         {
